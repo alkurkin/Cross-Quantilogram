@@ -48,9 +48,9 @@ def heatmap_example(data1,data2,picname="",show=True):
                 else "" for d in row] for row in dataset]
                 
     fig, ax = plt.subplots(figsize=(4,5))
-    im = ax.imshow(data_mat, cmap="Greys")
-    ax.set_ylabel("US lag=1",fontsize="xx-large",verticalalignment="center",labelpad=5)
-    ax.set_xlabel("CN",fontsize="xx-large",labelpad=35)
+    im = ax.imshow(data_mat, cmap="Greens")
+    ax.set_ylabel("",fontsize="xx-large",verticalalignment="center",labelpad=5)
+    ax.set_xlabel("",fontsize="xx-large",labelpad=35)
     cbar = ax.figure.colorbar(im,ax=ax,fraction=0.046,pad=0.02,orientation="horizontal",)
     cbar.ax.tick_params(labelsize="large")
     cbar.ax.set_ylabel("", rotation=-90, va="bottom")
