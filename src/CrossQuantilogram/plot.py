@@ -5,14 +5,17 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from .api import CQBS,CQBS_alphas,CQBS_years
 
-def bar_example(data1,data2,picname="",show=True):
+from typing import Dict
+
+def bar_example(data1,data2,picname="", yname1="", yname2="", show=True, figsize=(12,4)):
+
     alist=[0.1,0.5,0.9]
     dataset=[CQBS(data1,alist[i],data2,alist[i],20,verbose=True) for i in range(3)]
 
-    fig1,ax1=plt.subplots(2,3,figsize=(12,4))
+    fig1,ax1=plt.subplots(2,3,figsize=figsize)
     plt.subplots_adjust(wspace=0.3,hspace=0.8) 
     xaxis=[str(x) for x in dataset[0].index]    
-    ax1[0][0].set_ylabel("Cross-Quantilogram",fontsize="x-large",labelpad=0.1)
+    ax1[0][0].set_ylabel(yname1,fontsize="x-large",labelpad=0.1)
 
     for i in range(3):
         ax1[0][i].set_title("α={}".format(alist[i]),fontsize="xx-large")       
@@ -25,7 +28,7 @@ def bar_example(data1,data2,picname="",show=True):
         m = (abs(dataset[i]["cq"]).max()//0.05)*0.05+0.1
         ax1[0][i].set_ylim(-m,m)
         
-    ax1[1][0].set_ylabel("Portmanteau",fontsize="x-large")
+    ax1[1][0].set_ylabel(yname2,fontsize="x-large")
     for i in range(3):
         ax1[1][i].set_title("α={}".format(alist[i]),fontsize="xx-large")
         ax1[1][i].set_xlabel("lag",fontsize="xx-large")        
@@ -40,17 +43,17 @@ def bar_example(data1,data2,picname="",show=True):
         print(str(picname)+":")
         plt.show()
 
-def heatmap_example(data1,data2,picname="",show=True):
-    alist=[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
+def heatmap_example(data1,data2,picname="",show=True, xname="", yname="", color="Greens", alist=[0.1, 0.5, 0.9]):
+    # alist=[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
     dataset = CQBS_alphas(data1,alist,data2,alist,1,verbose=True)
     data_mat=np.array([[d["cq"] for d in row] for row in dataset])
     data_txt=[["*" if ((d["cq"]>d["cq_upper"] or d["cq"]<d["cq_lower"])and d["q"]>d["qc"])\
                 else "" for d in row] for row in dataset]
                 
     fig, ax = plt.subplots(figsize=(4,5))
-    im = ax.imshow(data_mat, cmap="Greens")
-    ax.set_ylabel("",fontsize="xx-large",verticalalignment="center",labelpad=5)
-    ax.set_xlabel("",fontsize="xx-large",labelpad=35)
+    im = ax.imshow(data_mat, cmap=color)
+    ax.set_ylabel(yname,fontsize="xx-large",verticalalignment="center",labelpad=5)
+    ax.set_xlabel(xname,fontsize="xx-large",labelpad=35)
     cbar = ax.figure.colorbar(im,ax=ax,fraction=0.046,pad=0.02,orientation="horizontal",)
     cbar.ax.tick_params(labelsize="large")
     cbar.ax.set_ylabel("", rotation=-90, va="bottom")
