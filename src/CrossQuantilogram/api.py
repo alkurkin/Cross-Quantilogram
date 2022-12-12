@@ -55,7 +55,7 @@ def CQBS(data1,a1,data2,a2,k,cqcl=0.95,testf=LjungBoxQ,testcl=0.95,n=1000,verbos
                            "q":testf(cqsample,k,length),"qc":qc},index=list(range(1,k+1)))
 
 def CQBS_alphas(data1,a1list,data2,a2list,k=1,cqcl=0.95,testf=LjungBoxQ,testcl=0.95,
-                all=False,n=1000,verbose=True):
+                all=False,n=100,verbose=True):
     '''
     Calculate Cross-Quantilogram result for a series of lags [1,k] and {a1list}×{a2list} quantiles from data2 to data1.
     Generating CQ data for many line plottings or heatmap plotting.
